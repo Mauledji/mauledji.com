@@ -1,0 +1,57 @@
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap");
+@import "tailwindcss";
+
+body {
+  width: 100dvw;
+  background: #030014;
+  color: white;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+@theme {
+  --font-Quicksand: "Quicksand", sans-serif;
+  --color-purple-10: #fffdff;
+  --color-purple-20: #f0ebff;
+  --color-purple-30: #7440ff;
+  --color-purple-40: #6000f2;
+  --color-purple-50: #4800bc;
+  --color-purple-60: #330089;
+  --color-purple-70: #1f005b;
+  --color-purple-80: #030014;
+  --breakpoint-custom: 1536px;
+}
+
+a,
+button,
+input,
+textarea,
+select,
+[role="button"],
+.cursor-pointer {
+  cursor: none !important;
+}
+
+a:hover,
+button:hover {
+  cursor: none !important;
+}
+@utility clip-path {
+  clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%);
+}
+
+@utility banner-text-responsive {
+  @apply text-[60px] sm:text-[100px] md:text-[126px] lg:text-[152px] leading-9 sm:leading-16 lg:leading-20;
+}
+
+@utility value-text-responsive {
+  @apply text-lg md:text-[26px] lg:text-[32px];
+}
+
+@utility marquee-text-responsive {
+  @apply text-[28px] sm:text-[36px] lg:text-[42px];
+}
+
+@utility contact-text-responsive {
+  @apply text-[42px] sm:text-[52px] md:text-[62px] lg:text-[100px];
+}
