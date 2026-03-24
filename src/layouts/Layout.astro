@@ -183,8 +183,16 @@ const alternateEs = `${siteUrl}/es/`;
           }, delay);
         }
 
+        function setAppHeight() {
+          document.documentElement.style.setProperty(
+            "--app-height",
+            `${window.innerHeight}px`
+          );
+        }
+
         function resize() {
           const dpr = window.devicePixelRatio || 1;
+          setAppHeight();
           width = canvas.offsetWidth;
           height = canvas.offsetHeight;
           canvas.width = Math.round(width * dpr);
