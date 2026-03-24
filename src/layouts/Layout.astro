@@ -138,7 +138,7 @@ const cssStars3 = genStarLayer(28,  "1px",   0.60, 1.00); // bright, rare
       // =============================================
       // Campo de estrellas — canvas (solo desktop)
       // =============================================
-      const isMobile = window.matchMedia("(max-width: 767px)").matches;
+      const isMobile = window.matchMedia("(hover: none)").matches;
       const canvas = document.getElementById("starfield") as HTMLCanvasElement;
       if (!isMobile && canvas) {
         const ctx = canvas.getContext("2d")!;
