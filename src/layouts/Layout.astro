@@ -184,8 +184,8 @@ const alternateEs = `${siteUrl}/es/`;
         }
 
         function resize() {
-          width = window.innerWidth;
-          height = window.innerHeight;
+          width = canvas.offsetWidth;
+          height = canvas.offsetHeight;
           canvas.width = width;
           canvas.height = height;
         }
@@ -273,12 +273,19 @@ const alternateEs = `${siteUrl}/es/`;
         draw();
         scheduleNext();
 
-        window.addEventListener("resize", () => {
+        const handleResize = () => {
           cancelAnimationFrame(animFrame);
           resize();
           createStars(220);
           draw();
-        });
+        };
+
+        window.addEventListener("resize", handleResize);
+
+        // iOS Safari: visualViewport cambia cuando aparece/desaparece la barra del navegador
+        if (window.visualViewport) {
+          window.visualViewport.addEventListener("resize", handleResize);
+        }
       }
 
       import { initAnimations } from "../lib/animations.ts";
