@@ -275,19 +275,16 @@ const alternateEs = `${siteUrl}/es/`;
         draw();
         scheduleNext();
 
-        const handleResize = () => {
-          cancelAnimationFrame(animFrame);
-          resize();
-          createStars(220);
-          draw();
-        };
-
-        window.addEventListener("resize", handleResize);
-
-        // iOS Safari: visualViewport cambia cuando aparece/desaparece la barra del navegador
-        if (window.visualViewport) {
-          window.visualViewport.addEventListener("resize", handleResize);
-        }
+        let resizeTimer: ReturnType<typeof setTimeout>;
+        window.addEventListener("resize", () => {
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(() => {
+            cancelAnimationFrame(animFrame);
+            resize();
+            createStars(220);
+            draw();
+          }, 150);
+        });
       }
 
       import { initAnimations } from "../lib/animations.ts";
