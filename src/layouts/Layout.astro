@@ -9,12 +9,14 @@ interface Props {
   lang?: Language;
   title?: string;
   description?: string;
+  showNav?: boolean;
 }
 
 const {
   lang = "en",
   title = "Mauricio Ledezma — Fullstack Software Engineer",
   description = "Fullstack Software Engineer from San José, Costa Rica. Building production-ready apps with Java, Spring Boot, React and TypeScript.",
+  showNav = true,
 } = Astro.props;
 
 const siteUrl = "https://mauledji.com";
@@ -80,7 +82,7 @@ const alternateEs = `${siteUrl}/es/`;
     <div class="nebula nebula-3" aria-hidden="true"></div>
 
     <CustomCursor client:only="react" />
-    <TimelineNav client:only="react" lang={lang} />
+    {showNav && <TimelineNav client:only="react" lang={lang} />}
 
     <!-- Language toggle — top right -->
     <div
