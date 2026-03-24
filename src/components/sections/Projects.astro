@@ -1,0 +1,91 @@
+---
+// Projects — Missions section
+import type { Language } from "../../lib/i18n/utils";
+import { t } from "../../lib/i18n/utils";
+import ProjectCard from "../ui/ProjectCard.astro";
+import SectionHeader from "../ui/SectionHeader.astro";
+
+interface Props {
+  lang: Language;
+}
+
+const { lang } = Astro.props;
+const i18n = t(lang);
+
+type MetricType =
+  | { type: "text"; value: string }
+  | { type: "mobile" }
+  | { type: "live" };
+
+const projectsConfig: {
+  tech: string[];
+  status: "production" | "completed";
+  siteUrl?: string;
+  githubUrl?: string;
+  images: [string, string];
+  metricTypes: MetricType[];
+}[] = [
+  {
+    tech: ["React", "JavaScript", "CSS3", "Testing", "Deployment"],
+    status: "production",
+    siteUrl: "https://georgeangulofitness.com",
+    images: ["/images/george-angulo.png", "/images/george-angulo1.png"],
+    metricTypes: [
+      { type: "text", value: "01" },
+      { type: "mobile" },
+      { type: "live" },
+    ],
+  },
+  {
+    tech: ["Astro", "React", "TypeScript", "GSAP", "Tailwind CSS"],
+    status: "production",
+    siteUrl: "https://mauledji.com",
+    githubUrl: "https://github.com/Mauledji/portfolio",
+    images: ["/images/mauledji.png", "/images/mauledji1.png"],
+    metricTypes: [
+      { type: "text", value: "EN/ES" },
+      { type: "mobile" },
+      { type: "live" },
+    ],
+  },
+];
+
+const projects = projectsConfig.map((config, i) => {
+  const item = i18n.projects.items[i];
+  return {
+    number: String(i + 1).padStart(2, "0"),
+    name: item.name,
+    subtitle: item.subtitle,
+    period: item.period,
+    description: item.description,
+    tech: config.tech,
+    status: config.status,
+    statusLabel:
+      config.status === "production"
+        ? i18n.projects.status_production
+        : i18n.projects.status_completed,
+    siteUrl: config.siteUrl,
+    githubUrl: config.githubUrl,
+    metrics: config.metricTypes.map((m, j) => ({
+      ...m,
+    })),
+    images: config.images,
+    viewSiteLabel: i18n.projects.view_site,
+  };
+});
+---
+
+<section id="projects" class="py-28">
+  <div class="container">
+    <SectionHeader
+      label={i18n.projects.section_label}
+      title={i18n.projects.title}
+      titleAccent={i18n.projects.title_accent}
+      subtitle={i18n.projects.subtitle}
+    />
+
+    <div class="flex flex-col gap-6">
+      {projects.map((project) => <ProjectCard {...project} />)}
+    </div>
+  </div>
+</section>

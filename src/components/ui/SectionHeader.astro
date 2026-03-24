@@ -1,0 +1,23 @@
+---
+interface Props {
+  label: string;
+  title: string;
+  titleAccent?: string;
+  subtitle?: string;
+}
+
+const { label, title, titleAccent, subtitle } = Astro.props;
+---
+
+<div class="constellation-line" data-animate="section">
+  <span>{label}</span>
+</div>
+
+<div class="mb-14" data-animate="section">
+  <h2
+    class="text-[clamp(2rem,4vw,2.8rem)] font-bold text-primary tracking-[-0.02em] mb-3"
+  >
+    {title}{titleAccent && <> <span class="text-accent-light">{titleAccent}</span></>}
+  </h2>
+  {subtitle && <p class="text-muted text-base">{subtitle}</p>}
+</div>

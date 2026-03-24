@@ -1,0 +1,231 @@
+---
+import type { Language } from "../../lib/i18n/utils";
+import { t } from "../../lib/i18n/utils";
+import CertCard from "../ui/CertCard.astro";
+import SectionHeader from "../ui/SectionHeader.astro";
+import TimelineEntry from "../ui/TimelineEntry.astro";
+
+interface Props {
+  lang: Language;
+}
+
+const { lang } = Astro.props;
+const i18n = t(lang);
+
+const certifications = [
+  {
+    title: "Linux Essentials",
+    issuer: "Linux Professional Institute (LPI)",
+    date: "June 2025",
+    credly:
+      "https://www.credly.com/badges/e990c85d-bb11-439d-b727-a515ed82d4e4/public_url",
+  },
+  {
+    title: "AWS Cloud Foundations",
+    issuer: "Amazon Web Services (AWS Academy)",
+    date: "2025",
+    credly:
+      "https://www.credly.com/badges/f5219dab-a64b-4e01-8348-9f0bd7603ab3/public_url",
+  },
+  {
+    title: "Introduction to Software Engineering",
+    issuer: "IBM",
+    date: "June 2025",
+    credly:
+      "https://www.credly.com/badges/4ad0f987-4d83-4497-b8f9-2809b117c928/public_url",
+  },
+  {
+    title: "Verified Credential",
+    issuer: "Professional Development",
+    date: "2025",
+    credly:
+      "https://www.credly.com/badges/d962df6c-068d-429c-a06f-a301f8ec12cc/public_url",
+  },
+];
+
+const logStats = [
+  {
+    label: i18n.experience.stats.status,
+    value: i18n.experience.stats.status_value,
+    isStatus: true,
+  },
+  { label: i18n.experience.stats.base, value: "San José, CR" },
+  {
+    label: i18n.experience.stats.availability,
+    value: i18n.experience.stats.availability_value,
+  },
+  { label: i18n.experience.stats.languages, value: "ES / EN" },
+];
+---
+
+<section id="experience" class="py-28">
+  <div class="container">
+    <SectionHeader
+      label={i18n.experience.section_label}
+      title={i18n.experience.title}
+      titleAccent={i18n.experience.title_accent}
+      subtitle={i18n.experience.subtitle}
+    />
+
+    <div class="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-12 items-start">
+      <div>
+        <!-- Experiencia -->
+        <div class="mb-12" data-animate="section">
+          <h3
+            class="flex items-center gap-2 text-[0.78rem] font-bold text-primary tracking-[0.14em] uppercase mb-6 pb-2 border-b border-border"
+          >
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              class="text-accent shrink-0"
+              aria-hidden="true"
+            >
+              <rect x="2" y="7" width="20" height="14" rx="2" ry="2"
+              ></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"
+              ></path>
+            </svg>
+            {i18n.experience.experience_label}
+          </h3>
+
+          <TimelineEntry
+            dot="work"
+            period={i18n.experience.work_period}
+            title={i18n.experience.work_title}
+            org={i18n.experience.work_org}
+            location={i18n.experience.work_location}
+            description={i18n.experience.work_desc}
+            highlights={[
+              i18n.experience.work_h1,
+              i18n.experience.work_h2,
+              i18n.experience.work_h3,
+              i18n.experience.work_h4,
+              i18n.experience.work_h5,
+            ]}
+          />
+        </div>
+
+        <!-- Educación -->
+        <div class="mb-12" data-animate="section">
+          <h3
+            class="flex items-center gap-2 text-[0.78rem] font-bold text-primary tracking-[0.14em] uppercase mb-6 pb-2 border-b border-border"
+          >
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              class="text-accent shrink-0"
+              aria-hidden="true"
+            >
+              <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path
+                d="M6 12v5c3 3 9 3 12 0v-5"></path>
+            </svg>
+            {i18n.experience.education_label}
+          </h3>
+
+          <TimelineEntry
+            dot="edu"
+            period={i18n.experience.edu_period}
+            title={i18n.experience.edu_title}
+            org={i18n.experience.edu_org}
+            location={i18n.experience.edu_location}
+            description={i18n.experience.edu_desc}
+            badge={i18n.experience.in_progress}
+            highlights={[
+              i18n.experience.edu_h1,
+              i18n.experience.edu_h2,
+              i18n.experience.edu_h3,
+              i18n.experience.edu_h4,
+            ]}
+          />
+
+          <TimelineEntry
+            dot="databricks"
+            period={i18n.experience.databricks_period}
+            title={i18n.experience.databricks_title}
+            org={i18n.experience.databricks_org}
+            description={i18n.experience.databricks_note}
+            badge={i18n.experience.in_progress}
+          />
+        </div>
+      </div>
+
+      <div class="sticky top-25" data-animate="section">
+        <h3
+          class="flex items-center gap-2 text-[0.78rem] font-bold text-primary tracking-[0.14em] uppercase mb-6 pb-2 border-b border-border"
+        >
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            class="text-accent shrink-0"
+            aria-hidden="true"
+          >
+            <circle cx="12" cy="8" r="6"></circle><path
+              d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"></path>
+          </svg>
+          {i18n.experience.certifications_label}
+        </h3>
+
+        <div class="flex flex-col gap-3 mb-6">
+          {certifications.map((cert) => <CertCard {...cert} />)}
+        </div>
+
+        <div
+          class="glass border border-border/50 rounded-[10px] p-5 flex flex-col gap-3"
+          data-animate="item"
+        >
+          {
+            logStats.map((stat) => (
+              <div class="flex justify-between items-center gap-4">
+                <span class="text-[0.72rem] text-dim tracking-[0.08em] uppercase">
+                  {stat.label}
+                </span>
+                {stat.isStatus ? (
+                  <span class="text-[0.82rem] font-mono text-right flex items-center gap-1.5 text-green">
+                    <span class="log-dot" />
+                    {stat.value}
+                  </span>
+                ) : (
+                  <span class="text-[0.82rem] text-secondary font-mono text-right">
+                    {stat.value}
+                  </span>
+                )}
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  @keyframes blink-log {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.3;
+    }
+  }
+
+  .log-dot {
+    width: 6px;
+    height: 6px;
+    background: #22c55e;
+    border-radius: 50%;
+    box-shadow: 0 0 6px #22c55e;
+    animation: blink-log 2s ease-in-out infinite;
+  }
+</style>

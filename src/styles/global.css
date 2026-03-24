@@ -1,0 +1,311 @@
+@import "tailwindcss";
+/* =============================================
+   Sistema de diseño — Tema Espacio / Galaxia
+   ============================================= */
+
+@theme {
+  --color-background: #0a0a0f;
+  --color-surface: #12121a;
+  --color-border: #1e1e2e;
+  --color-primary: #ffffff;
+  --color-secondary: #ccd8e6;
+  --color-muted: #9ab0c4;
+  --color-dim: #6e8aa0;
+  --color-subtle: #4a6478;
+  --color-accent: #7c3aed;
+  --color-accent-light: #a78bfa;
+  --color-star-white: #f8fafc;
+  --color-green: #22c55e;
+
+  --font-sans: "Quicksand", "Space Grotesk", sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+}
+
+/* =============================================
+   Reset y base
+   ============================================= */
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+html {
+  font-size: 18px;
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+*,
+*::before,
+*::after {
+  cursor: none !important;
+}
+
+body {
+  background-color: #0a0a0f;
+  color: #ffffff;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* =============================================
+   Scrollbar personalizado
+   ============================================= */
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0f;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #7c3aed;
+  border-radius: 2px;
+}
+
+/* =============================================
+   Selección de texto
+   ============================================= */
+
+::selection {
+  background: rgba(124, 58, 237, 0.3);
+  color: #f8fafc;
+}
+
+/* =============================================
+   Canvas de estrellas
+   ============================================= */
+
+#starfield {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* =============================================
+   Nebulosas decorativas
+   ============================================= */
+
+.nebula {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(80px);
+  opacity: 0.06;
+}
+
+.nebula-1 {
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, #7c3aed, transparent 70%);
+  top: -10%;
+  right: -10%;
+  animation: nebula-drift 25s ease-in-out infinite alternate;
+}
+
+.nebula-2 {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, #3b82f6, transparent 70%);
+  bottom: 20%;
+  left: -15%;
+  animation: nebula-drift 30s ease-in-out infinite alternate-reverse;
+  opacity: 0.04;
+}
+
+.nebula-3 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, #a78bfa, transparent 70%);
+  top: 50%;
+  left: 40%;
+  animation: nebula-drift 35s ease-in-out infinite alternate;
+  opacity: 0.03;
+}
+
+@keyframes nebula-drift {
+  from {
+    transform: translate(0, 0) scale(1);
+  }
+  to {
+    transform: translate(30px, -20px) scale(1.1);
+  }
+}
+
+/* =============================================
+   Secciones
+   ============================================= */
+
+section {
+  position: relative;
+  z-index: 1;
+}
+
+/* =============================================
+   Línea divisora tipo constelación
+   ============================================= */
+
+.constellation-line {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #ccd8e6;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 3rem;
+}
+
+.constellation-line::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: #7c3aed;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #7c3aed;
+}
+
+.constellation-line::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, #7c3aed33, transparent);
+}
+
+/* =============================================
+   Noise texture overlay (sutil)
+   ============================================= */
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+}
+
+/* =============================================
+   Responsive helpers
+   ============================================= */
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding: 0 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding: 0 3rem;
+  }
+}
+
+/* =============================================
+   Badge / Tag
+   ============================================= */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  background: rgba(124, 58, 237, 0.1);
+  border: 1px solid rgba(124, 58, 237, 0.3);
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  color: #a78bfa;
+  letter-spacing: 0.05em;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.badge:hover {
+  background: rgba(124, 58, 237, 0.2);
+  border-color: rgba(124, 58, 237, 0.5);
+}
+
+/* =============================================
+   Tech tag — etiquetas de stack en proyectos
+   ============================================= */
+
+.tech-tag {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.75rem;
+  color: #a78bfa;
+  background: rgba(124, 58, 237, 0.08);
+  border: 1px solid rgba(124, 58, 237, 0.2);
+  padding: 0.125rem 0.625rem;
+  border-radius: 4px;
+  letter-spacing: 0.03em;
+}
+
+/* =============================================
+   Glass effect — tarjetas translúcidas
+   ============================================= */
+
+.glass {
+  background: rgba(12, 12, 20, 0.45) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* =============================================
+   Timeline Nav — oculto en mobile
+   ============================================= */
+
+@media (max-width: 767px) {
+  .timeline-nav {
+    display: none !important;
+  }
+}
+
+/* =============================================
+   Sileo toasts — tema oscuro del portfolio
+   ============================================= */
+:root {
+  --sileo-state-success: oklch(0.7 0.19 152); /* #22c55e verde del portfolio */
+}
+[data-sileo-title] {
+  color: #e2e8f0 !important;
+}
+[data-sileo-description] {
+  color: #94a3b8 !important;
+}
+
+/* =============================================
+   Accesibilidad — reduce motion
+   ============================================= */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

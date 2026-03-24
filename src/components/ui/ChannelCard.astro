@@ -1,0 +1,124 @@
+---
+interface Props {
+  label: string;
+  value: string;
+  href?: string;
+  target?: string;
+  copy?: string;
+}
+
+const { label, value, href, target = "_blank", copy } = Astro.props;
+const rel = target === "_blank" ? "noopener noreferrer" : undefined;
+---
+
+{
+  copy ? (
+    <button
+      data-channel-copy={copy}
+      class="channel-card group flex items-center gap-4 px-5 py-4 glass border border-border/50 rounded-[10px] w-full text-left transition-all duration-250 ease-[ease] hover:border-accent/40 hover:translate-x-1.5 cursor-pointer"
+      data-animate="item"
+      aria-label={`Copy ${label.toLowerCase()}`}
+    >
+      <div class="w-9.5 h-9.5 flex items-center justify-center bg-accent/10 border border-accent/20 rounded-lg text-accent-light shrink-0 transition-colors duration-200 group-hover:bg-accent/20">
+        <slot />
+      </div>
+      <div class="flex-1 flex flex-col gap-0.5">
+        <span class="text-[0.7rem] text-dim tracking-widest uppercase">
+          {label}
+        </span>
+        <span
+          data-channel-value
+          class="text-sm text-secondary transition-colors duration-200 group-hover:text-primary"
+        >
+          {value}
+        </span>
+      </div>
+      <svg
+        data-channel-copy-icon
+        class="shrink-0 text-subtle transition-[color,transform] duration-200 group-hover:text-accent-light"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        aria-hidden="true"
+      >
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+      </svg>
+    </button>
+  ) : (
+    <a
+      href={href}
+      target={target}
+      rel={rel}
+      class="channel-card group flex items-center gap-4 px-5 py-4 glass border border-border/50 rounded-[10px] no-underline transition-all duration-250 ease-[ease] hover:border-accent/40 hover:translate-x-1.5"
+      data-animate="item"
+    >
+      <div class="w-9.5 h-9.5 flex items-center justify-center bg-accent/10 border border-accent/20 rounded-lg text-accent-light shrink-0 transition-colors duration-200 group-hover:bg-accent/20">
+        <slot />
+      </div>
+      <div class="flex-1 flex flex-col gap-0.5">
+        <span class="text-[0.7rem] text-dim tracking-widest uppercase">
+          {label}
+        </span>
+        <span class="text-sm text-secondary transition-colors duration-200 group-hover:text-primary">
+          {value}
+        </span>
+      </div>
+      <svg
+        class="shrink-0 text-subtle transition-[color,transform] duration-200 group-hover:text-accent-light group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        aria-hidden="true"
+      >
+        <path d="M7 17L17 7M17 7H7M17 7v10" />
+      </svg>
+    </a>
+  )
+}
+
+<style>
+  [data-channel-copy-icon] {
+    transition:
+      color 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  [data-channel-copy].copied [data-channel-copy-icon] {
+    color: #22c55e;
+    transform: scale(1.15);
+  }
+
+  [data-channel-copy].copied [data-channel-value] {
+    color: #22c55e;
+  }
+</style>
+
+<script>
+  import { sileo } from "sileo";
+
+  document
+    .querySelectorAll<HTMLButtonElement>("[data-channel-copy]")
+    .forEach((btn) => {
+      const valueToCopy = btn.dataset.channelCopy!;
+      const valueEl = btn.querySelector<HTMLElement>("[data-channel-value]")!;
+      const originalText = valueEl.textContent;
+
+      btn.addEventListener("click", async () => {
+        await navigator.clipboard.writeText(valueToCopy);
+        valueEl.textContent = "Copied!";
+        btn.classList.add("copied");
+        setTimeout(() => {
+          valueEl.textContent = originalText;
+          btn.classList.remove("copied");
+        }, 2000);
+        sileo.success({ title: "Copied", description: valueToCopy });
+      });
+    });
+</script>

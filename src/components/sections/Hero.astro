@@ -1,0 +1,230 @@
+---
+import type { Language } from "../../lib/i18n/utils";
+import { t } from "../../lib/i18n/utils";
+import Icon from "../ui/Icon.astro";
+import Button from "../ui/Button.astro";
+
+interface Props {
+  lang: Language;
+}
+
+const { lang } = Astro.props;
+const i18n = t(lang);
+---
+
+<section
+  id="hero"
+  class="flex items-center relative overflow-hidden pt-20 min-h-screen"
+>
+  <div class="hero-content container relative z-2 py-16">
+    <div
+      class="inline-flex items-center gap-2.5 text-[0.8rem] text-secondary tracking-[0.12em] uppercase mb-8 border border-border px-4 py-[0.4rem] rounded-full bg-surface/80"
+      data-animate="hero-item"
+    >
+      <span class="eyebrow-dot"></span>
+      <span>{i18n.hero.available}</span>
+    </div>
+
+    <h1
+      class="text-[clamp(3.5rem,10vw,8rem)] font-bold leading-none tracking-[-0.03em] mb-6"
+      data-animate="hero-item"
+    >
+      <span class="text-primary">Mauricio</span><br />
+      <span class="hero-last text-accent-light inline-block">Ledezma</span>
+    </h1>
+
+    <p
+      class="text-[clamp(1.1rem,2vw,1.4rem)] text-secondary mb-6 font-normal tracking-[0.02em]"
+      data-animate="hero-item"
+    >
+      <span class="text-accent mr-2">—</span>
+      {i18n.hero.role}
+    </p>
+
+    <p
+      class="text-[clamp(0.95rem,1.5vw,1.1rem)] text-primary max-w-130 leading-[1.7] mb-7"
+      data-animate="hero-item"
+    >
+      {i18n.hero.bio}
+    </p>
+
+    <div
+      class="flex gap-5 mb-8 items-center"
+      data-animate="hero-item"
+      role="list"
+      aria-label="Social links"
+    >
+      <a
+        href="https://github.com/Mauledji"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-dim no-underline transition-[color,transform] duration-200 ease-[ease] flex items-center hover:text-accent-light hover:-translate-y-0.5"
+        aria-label="GitHub"
+        role="listitem"
+      >
+        <Icon name="github" size={20} />
+      </a>
+      <a
+        href="https://www.linkedin.com/in/mauledji/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-dim no-underline transition-[color,transform] duration-200 ease-[ease] flex items-center hover:text-accent-light hover:-translate-y-0.5"
+        aria-label="LinkedIn"
+        role="listitem"
+      >
+        <Icon name="linkedin" size={20} />
+      </a>
+      <button
+        data-hero-copy-email="mauledji@outlook.com"
+        class="text-dim transition-[color,transform] duration-200 ease-[ease] flex items-center hover:text-accent-light hover:-translate-y-0.5 cursor-pointer bg-transparent border-0 p-0"
+        aria-label="Copy email"
+        role="listitem"
+      >
+        <Icon name="email" size={20} />
+      </button>
+      <a
+        href="/cv.pdf"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-dim no-underline transition-[color,transform] duration-200 ease-[ease] flex items-center hover:text-accent-light hover:-translate-y-0.5"
+        aria-label="View CV"
+        role="listitem"
+      >
+        <Icon name="cv" size={20} />
+      </a>
+    </div>
+
+    <div class="flex gap-4 flex-wrap mb-16" data-animate="hero-item">
+      <Button href="#projects" variant="primary">
+        {i18n.hero.cta_primary}
+        <Icon name="arrow-up-right" size={16} />
+      </Button>
+      <Button href="#contact" variant="secondary">
+        {i18n.hero.cta_secondary}
+      </Button>
+    </div>
+
+  </div>
+
+  <div
+    class="absolute -right-45 top-1/2 -translate-y-1/2 z-1 pointer-events-none w-150 h-150 hidden md:block"
+    aria-hidden="true"
+  >
+    <div class="orbit orbit-1">
+      <div class="orbit-dot"></div>
+    </div>
+    <div class="orbit orbit-2">
+      <div class="orbit-dot"></div>
+    </div>
+  </div>
+
+  <div
+    class="absolute bottom-8 right-6 lg:right-12 flex gap-2 text-[0.7rem] text-subtle font-mono tracking-widest"
+    data-animate="hero-item"
+    aria-hidden="true"
+  >
+    <span>9.9°N</span>
+    <span>·</span>
+    <span>84.1°W</span>
+    <span>·</span>
+    <span>SJO</span>
+  </div>
+</section>
+
+<style>
+  @keyframes blink {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.3;
+    }
+  }
+
+  @keyframes rotate {
+    from {
+      transform: translate(-50%, -50%) rotate(0deg);
+    }
+    to {
+      transform: translate(-50%, -50%) rotate(360deg);
+    }
+  }
+
+  @keyframes scroll-pulse {
+    0%,
+    100% {
+      opacity: 0.5;
+      width: 40px;
+    }
+    50% {
+      opacity: 1;
+      width: 60px;
+    }
+  }
+
+  .eyebrow-dot {
+    width: 6px;
+    height: 6px;
+    background: #22c55e;
+    border-radius: 50%;
+    box-shadow: 0 0 6px #22c55e;
+    animation: blink 2s ease-in-out infinite;
+  }
+
+  .scroll-line {
+    width: 40px;
+    height: 1px;
+    background: linear-gradient(to right, #7c3aed, transparent);
+    animation: scroll-pulse 2s ease-in-out infinite;
+  }
+
+  .orbit {
+    border-radius: 50%;
+    border: 1px solid rgba(124, 58, 237, 0.12);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .orbit-1 {
+    width: 320px;
+    height: 320px;
+    animation: rotate 20s linear infinite;
+  }
+
+  .orbit-2 {
+    width: 520px;
+    height: 520px;
+    animation: rotate 35s linear infinite reverse;
+  }
+
+  .orbit-dot {
+    width: 6px;
+    height: 6px;
+    background: #a78bfa;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #a78bfa;
+    position: absolute;
+    top: -3px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .hero-last {
+    display: inline-block;
+  }
+</style>
+
+<script>
+  import { attachCopyEmail } from "../../lib/copyEmail";
+
+  const btn = document.querySelector<HTMLButtonElement>(
+    "[data-hero-copy-email]",
+  );
+  if (btn) {
+    const email = btn.dataset.heroCopyEmail!;
+    attachCopyEmail(btn, email, () => {}, () => {});
+  }
+</script>

@@ -1,0 +1,304 @@
+---
+import type { Language } from "../../lib/i18n/utils";
+import { t } from "../../lib/i18n/utils";
+import Icon from "../ui/Icon.astro";
+
+interface Props {
+  lang: Language;
+}
+
+const { lang } = Astro.props;
+const i18n = t(lang);
+
+const aboutStats = [
+  { value: "2+", label: i18n.about.stat_experience },
+  { value: String(i18n.projects.items.length), label: i18n.about.stat_projects },
+  { value: "30+", label: i18n.about.stat_technologies },
+];
+---
+
+<section id="about" class="py-28">
+  <div class="container">
+    <div class="constellation-line" data-animate="section">
+      <span>{i18n.about.section_label}</span>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+      <div
+        class="terminal-card glass border border-border/50 rounded-[10px] overflow-hidden font-mono text-[0.82rem]"
+        data-animate="section"
+      >
+        <div
+          class="flex items-center gap-3 px-4 py-3 bg-surface border-b border-border"
+        >
+          <div class="flex gap-1.5">
+            <span class="w-2.5 h-2.5 rounded-full bg-red-500"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-yellow-500"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-green"></span>
+          </div>
+          <span class="text-dim text-[0.75rem] flex-1 text-center"
+            >signal_received.sh</span
+          >
+        </div>
+        <div class="flex flex-col gap-[0.4rem] px-5 pt-5 pb-4">
+          <div class="terminal-line delay-line-1">
+            <span class="text-accent select-none">$</span>
+            <span class="text-primary"> whoami</span>
+          </div>
+          <div class="terminal-output delay-line-2">
+            Mauricio Ledezma Jiménez
+          </div>
+          <div class="terminal-line delay-line-3">
+            <span class="text-accent select-none">$</span>
+            <span class="text-primary"> cat location.txt</span>
+          </div>
+          <div class="terminal-output delay-line-4">San José, Costa Rica</div>
+          <div class="terminal-line delay-line-5">
+            <span class="text-accent select-none">$</span>
+            <span class="text-primary"> cat status.txt</span>
+          </div>
+          <div class="terminal-output delay-line-6">
+            <span class="status-ok">●</span>
+            {i18n.about.terminal_status}
+          </div>
+          <div class="terminal-line delay-line-7">
+            <span class="text-accent select-none">$</span>
+            <span class="text-primary"> echo $UNIVERSITY</span>
+          </div>
+          <div class="terminal-output delay-line-8">
+            Universidad Latina de Costa Rica
+          </div>
+          <div class="terminal-line delay-line-9">
+            <span class="text-accent select-none">$</span>
+            <span class="text-primary"> cat passion.txt</span>
+          </div>
+          <div class="terminal-output passion-text delay-line-10">
+            {
+              i18n.about.terminal_passion.split("\n").map((line, i) => (
+                <span>
+                  {line}
+                  {i < 2 ? <br /> : ""}
+                </span>
+              ))
+            }
+          </div>
+          <div class="flex gap-1 mt-1">
+            <span class="text-accent select-none">$</span>
+            <span class="cursor-blink text-accent">_</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bio -->
+      <div class="flex flex-col">
+        <h2
+          class="text-[clamp(2rem,4vw,2.8rem)] font-bold text-primary mb-8 tracking-[-0.02em]"
+          data-animate="section"
+        >
+          {i18n.about.title}
+          <span class="text-accent-light">{i18n.about.title_accent}</span>
+        </h2>
+
+        <div class="flex flex-col gap-4 mb-10" data-animate="section">
+          <p class="text-secondary text-base leading-[1.8]">
+            {i18n.about.bio_1}
+          </p>
+          <p class="text-secondary text-base leading-[1.8]">
+            {i18n.about.bio_2}
+          </p>
+        </div>
+
+        <div
+          class="grid grid-cols-3 mb-10 p-6 glass border border-border/50 rounded-[10px]"
+          data-animate="section"
+        >
+          {
+            aboutStats.map((stat, i) => (
+              <>
+                <div class={`flex flex-col gap-1 px-3 ${i > 0 ? "border-l border-border" : ""}`} data-animate="item">
+                  <span class="text-[1.8rem] font-bold text-accent-light leading-none tracking-[-0.03em]">
+                    {stat.value}
+                  </span>
+                  <span class="text-[0.65rem] text-dim tracking-[0.05em] uppercase leading-tight">
+                    {stat.label}
+                  </span>
+                </div>
+              </>
+            ))
+          }
+        </div>
+
+        <div class="flex flex-wrap gap-3" data-animate="section">
+          <a
+            href="https://github.com/Mauledji"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="about-link inline-flex items-center gap-2 px-4 py-2 border border-border text-secondary no-underline rounded-md text-[0.85rem] bg-surface/60 transition-all duration-200"
+            data-animate="item"
+            aria-label="GitHub"
+          >
+            <Icon name="github" size={16} />
+            GitHub
+          </a>
+          <a
+            href="https://www.linkedin.com/in/mauledji"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="about-link inline-flex items-center gap-2 px-4 py-2 border border-border text-secondary no-underline rounded-md text-[0.85rem] bg-surface/60 transition-all duration-200"
+            data-animate="item"
+            aria-label="LinkedIn"
+          >
+            <Icon name="linkedin" size={16} />
+            LinkedIn
+          </a>
+          <button
+            data-about-copy-email="mauledji@outlook.com"
+            class="about-link inline-flex items-center gap-2 px-4 py-2 border border-border text-secondary rounded-md text-[0.85rem] bg-surface/60 transition-all duration-200 cursor-pointer"
+            data-animate="item"
+            aria-label="Copy email"
+          >
+            <Icon name="email" size={16} />
+            <span data-about-email-label>mauledji@outlook.com</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  @keyframes typeIn {
+    from {
+      opacity: 0;
+      transform: translateX(-4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes blink-cursor {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+  }
+
+  .terminal-line {
+    display: flex;
+    gap: 4px;
+    opacity: 0;
+    animation: typeIn 0.1s ease forwards;
+    animation-play-state: paused;
+  }
+
+  .terminal-output {
+    color: #94a3b8;
+    padding-left: 1.2rem;
+    padding-bottom: 0.6rem;
+    opacity: 0;
+    animation: typeIn 0.1s ease forwards;
+    animation-play-state: paused;
+    line-height: 1.5;
+  }
+
+  .terminal-animate .terminal-line,
+  .terminal-animate .terminal-output {
+    animation-play-state: running;
+  }
+
+  .cursor-blink {
+    animation: blink-cursor 1s step-end infinite;
+  }
+
+  .status-ok {
+    color: #22c55e;
+  }
+  .passion-text {
+    color: #a78bfa;
+  }
+
+  .delay-line-1 {
+    animation-delay: 0.3s;
+  }
+  .delay-line-2 {
+    animation-delay: 0.6s;
+  }
+  .delay-line-3 {
+    animation-delay: 0.9s;
+  }
+  .delay-line-4 {
+    animation-delay: 1.2s;
+  }
+  .delay-line-5 {
+    animation-delay: 1.5s;
+  }
+  .delay-line-6 {
+    animation-delay: 1.8s;
+  }
+  .delay-line-7 {
+    animation-delay: 2.1s;
+  }
+  .delay-line-8 {
+    animation-delay: 2.4s;
+  }
+  .delay-line-9 {
+    animation-delay: 2.7s;
+  }
+  .delay-line-10 {
+    animation-delay: 3s;
+  }
+
+  .about-link:hover {
+    border-color: #7c3aed;
+    color: #a78bfa;
+    background: rgba(124, 58, 237, 0.08);
+    transform: translateY(-2px);
+  }
+</style>
+
+<script>
+  import { attachCopyEmail } from "../../lib/copyEmail";
+
+  const terminal = document.querySelector<HTMLElement>(".terminal-card");
+  if (terminal) {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          terminal.classList.add("terminal-animate");
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.2 },
+    );
+    observer.observe(terminal);
+  }
+
+  const btn = document.querySelector<HTMLButtonElement>(
+    "[data-about-copy-email]",
+  );
+  if (btn) {
+    const email = btn.dataset.aboutCopyEmail!;
+    const label = btn.querySelector<HTMLElement>("[data-about-email-label]")!;
+    const originalText = label.textContent;
+
+    attachCopyEmail(
+      btn,
+      email,
+      () => {
+        label.textContent = "Copied!";
+        btn.style.color = "#22c55e";
+        btn.style.borderColor = "#22c55e44";
+      },
+      () => {
+        label.textContent = originalText;
+        btn.style.color = "";
+        btn.style.borderColor = "";
+      },
+    );
+  }
+</script>

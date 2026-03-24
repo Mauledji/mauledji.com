@@ -1,0 +1,230 @@
+---
+import type { Language } from "../../lib/i18n/utils";
+import { t } from "../../lib/i18n/utils";
+
+interface Props {
+  lang: Language;
+}
+
+const { lang } = Astro.props;
+const i18n = t(lang);
+
+import SectionHeader from "../ui/SectionHeader.astro";
+
+type SkillCdn = "si" | "jd";
+interface Skill {
+  name: string;
+  slug: string | null;
+  cdn?: SkillCdn;
+}
+
+const skillGroups: {
+  id: string;
+  label: string;
+  color: string;
+  skills: Skill[];
+}[] = [
+  {
+    id: "languages",
+    get label() {
+      return i18n.skills.groups.languages;
+    },
+    color: "#a78bfa",
+    skills: [
+      { name: "Java", slug: "openjdk" },
+      { name: "TypeScript", slug: "typescript" },
+      { name: "JavaScript", slug: "javascript" },
+      { name: "Python", slug: "python" },
+      { name: "C++", slug: "cplusplus" },
+      { name: "Bash", slug: "gnubash" },
+    ],
+  },
+  {
+    id: "frontend",
+    get label() {
+      return i18n.skills.groups.frontend;
+    },
+    color: "#60a5fa",
+    skills: [
+      { name: "React", slug: "react" },
+      { name: "Next.js", slug: "nextdotjs" },
+      { name: "Astro", slug: "astro" },
+      { name: "HTML5", slug: "html5" },
+      { name: "CSS3", slug: "css" },
+      { name: "Tailwind CSS", slug: "tailwindcss" },
+      { name: "GSAP", slug: "gsap" },
+    ],
+  },
+  {
+    id: "backend",
+    get label() {
+      return i18n.skills.groups.backend;
+    },
+    color: "#34d399",
+    skills: [
+      { name: "Spring Boot", slug: "springboot" },
+      { name: "NodeJS", slug: "nodedotjs" },
+      { name: "JWT", slug: "jsonwebtokens" },
+      { name: "WebSockets", slug: "socketdotio" },
+      { name: "JPA/Hibernate", slug: "hibernate" },
+    ],
+  },
+  {
+    id: "data",
+    get label() {
+      return i18n.skills.groups.data;
+    },
+    color: "#f59e0b",
+    skills: [
+      { name: "MySQL", slug: "mysql" },
+      { name: "PostgreSQL", slug: "postgresql" },
+      { name: "MongoDB", slug: "mongodb" },
+      { name: "SQLite", slug: "sqlite" },
+      { name: "Pandas", slug: "pandas" },
+      { name: "NumPy", slug: "numpy" },
+    ],
+  },
+  {
+    id: "tools",
+    get label() {
+      return i18n.skills.groups.tools;
+    },
+    color: "#f87171",
+    skills: [
+      { name: "Git", slug: "git" },
+      { name: "GitHub", slug: "github" },
+      { name: "Linux", slug: "linux" },
+      { name: "Figma", slug: "figma" },
+      { name: "Scrum", slug: "scrumalliance" },
+      { name: "Docker", slug: "docker" },
+    ],
+  },
+  {
+    id: "cloud",
+    get label() {
+      return i18n.skills.groups.cloud;
+    },
+    color: "#fb923c",
+    skills: [
+      { name: "AWS", slug: "amazonwebservices", cdn: "jd" },
+      { name: "Databricks", slug: "databricks" },
+    ],
+  },
+];
+
+// URL del ícono según CDN disponible
+function getIconUrl(slug: string, cdn: SkillCdn = "si"): string {
+  if (cdn === "jd")
+    return `https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/${slug}.svg`;
+  return `https://cdn.simpleicons.org/${slug}`;
+}
+
+// Placeholder SVG inline para skills sin simpleicons
+function placeholderIcon(name: string, color: string): string {
+  const initials = name.slice(0, 2).toUpperCase();
+  return `<svg viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg" width="28" height="28"><rect width="28" height="28" rx="5" fill="${color}" opacity="0.15"/><text x="14" y="19" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" font-weight="700" fill="${color}">${initials}</text></svg>`;
+}
+---
+
+<section id="skills" class="py-28">
+  <div class="container">
+    <SectionHeader
+      label={i18n.skills.section_label}
+      title={i18n.skills.title}
+      titleAccent={i18n.skills.title_accent}
+      subtitle={i18n.skills.subtitle}
+    />
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      {
+        skillGroups.map((group) => (
+          <div
+            class="skill-card glass border border-border/50 rounded-xl relative overflow-hidden transition-[border-color,transform] duration-300 ease-out hover:-translate-y-1 hover:border-[#2e2e3e]"
+            data-animate="section"
+            style={`--group-color: ${group.color};`}
+          >
+            <div
+              class="flex items-center gap-3 px-4 py-2.5 border-b border-border/40"
+              style="background: rgba(8,8,14,0.6)"
+            >
+              <div class="flex gap-1.5 shrink-0">
+                <span class="w-2.5 h-2.5 rounded-full bg-red-500/75" />
+                <span class="w-2.5 h-2.5 rounded-full bg-yellow-500/75" />
+                <span class="w-2.5 h-2.5 rounded-full bg-green-500/75" />
+              </div>
+              <span class="text-[0.7rem] text-dim font-mono flex-1 text-center">
+                {group.id}.sh
+              </span>
+              <span
+                class="text-[0.68rem] font-semibold tracking-[0.08em] uppercase shrink-0"
+                style={`color: ${group.color}`}
+              >
+                {group.label}
+              </span>
+            </div>
+
+            {/* Grid de íconos */}
+            <div class="grid grid-cols-3 gap-3 p-5">
+              {group.skills.map((skill) => (
+                <div
+                  class="group flex flex-col items-center gap-1.25 py-2 px-1 rounded-md transition-colors duration-200 ease-out cursor-default"
+                  data-animate="item"
+                  title={skill.name}
+                >
+                  {skill.slug ? (
+                    <img
+                      src={getIconUrl(skill.slug, skill.cdn)}
+                      alt={skill.name}
+                      class="skill-tech-icon w-6.5 h-6.5 object-contain"
+                      width="26"
+                      height="26"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <span
+                      class="w-6.5 h-6.5 flex items-center justify-center transition-[transform,opacity] duration-200 ease-out opacity-50 group-hover:scale-110 group-hover:opacity-100"
+                      set:html={placeholderIcon(skill.name, group.color)}
+                    />
+                  )}
+                  <span class="text-[0.65rem] text-muted text-center leading-[1.2] transition-colors duration-200 ease-out group-hover:text-primary">
+                    {skill.name}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .skill-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--group-color);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .skill-card:hover::before {
+    opacity: 1;
+  }
+
+  .skill-tech-icon {
+    filter: brightness(0) invert(0.45);
+    transition:
+      filter 0.25s ease,
+      transform 0.25s ease;
+  }
+
+  .group:hover .skill-tech-icon {
+    filter: none;
+    transform: scale(1.15);
+  }
+</style>

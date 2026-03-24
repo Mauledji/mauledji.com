@@ -1,0 +1,27 @@
+---
+import About from "../components/sections/About.astro";
+import Contact from "../components/sections/Contact.astro";
+import Experience from "../components/sections/Experience.astro";
+import Hero from "../components/sections/Hero.astro";
+import Projects from "../components/sections/Projects.astro";
+import Skills from "../components/sections/Skills.astro";
+import Layout from "../layouts/Layout.astro";
+import "../styles/global.css";
+
+const lang = "en" as const;
+---
+
+<Layout
+  lang={lang}
+  title="Mauricio Ledezma — Fullstack Software Engineer"
+  description="Fullstack Software Engineer from San José, Costa Rica. Building production-ready apps with Java, Spring Boot, React and TypeScript."
+>
+  <main>
+    <Hero lang={lang} />
+    <About lang={lang} />
+    <Skills lang={lang} />
+    <Experience lang={lang} />
+    <Projects lang={lang} />
+    <Contact lang={lang} />
+  </main>
+</Layout>
