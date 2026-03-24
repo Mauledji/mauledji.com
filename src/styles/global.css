@@ -274,7 +274,10 @@ section {
 #starfield-css {
   display: none;
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100lvh; /* large viewport height: cubre el área cuando la URL bar se oculta */
   z-index: 0;
   pointer-events: none;
   -webkit-transform: translate3d(0, 0, 0);
