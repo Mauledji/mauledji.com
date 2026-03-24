@@ -200,21 +200,6 @@ function placeholderIcon(name: string, color: string): string {
 </section>
 
 <style>
-  .skill-card::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: var(--group-color);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  .skill-card:hover::before {
-    opacity: 1;
-  }
 
   .skill-tech-icon {
     filter: brightness(0) invert(0.45);
