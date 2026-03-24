@@ -299,6 +299,17 @@ body::before {
 }
 
 /* =============================================
+   Animaciones GSAP — estado inicial
+   Evita el parpadeo: elementos invisibles desde
+   que el HTML pinta, antes de que JS cargue
+   ============================================= */
+[data-animate="section"],
+[data-animate="item"],
+[data-animate="hero-item"] {
+  opacity: 0;
+}
+
+/* =============================================
    Accesibilidad — reduce motion
    ============================================= */
 @media (prefers-reduced-motion: reduce) {
