@@ -275,15 +275,11 @@ const alternateEs = `${siteUrl}/es/`;
         draw();
         scheduleNext();
 
-        let resizeTimer: ReturnType<typeof setTimeout>;
         window.addEventListener("resize", () => {
-          clearTimeout(resizeTimer);
-          resizeTimer = setTimeout(() => {
-            cancelAnimationFrame(animFrame);
-            resize();
-            createStars(220);
-            draw();
-          }, 150);
+          cancelAnimationFrame(animFrame);
+          resize();
+          createStars(220);
+          draw();
         });
       }
 
