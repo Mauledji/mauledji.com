@@ -23,6 +23,19 @@ const siteUrl = "https://mauledji.com";
 const canonicalUrl = lang === "es" ? `${siteUrl}/es/` : `${siteUrl}/`;
 const alternateEn = `${siteUrl}/`;
 const alternateEs = `${siteUrl}/es/`;
+
+// CSS starfield para móvil — generado en build time
+function genStarLayer(count: number, spread: string, minOp: number, maxOp: number): string {
+  return Array.from({ length: count }, () => {
+    const x = Math.floor(Math.random() * 1000);
+    const y = Math.floor(Math.random() * 1000);
+    const op = (Math.random() * (maxOp - minOp) + minOp).toFixed(2);
+    return `${x}px ${y}px 0 ${spread} rgba(248,250,252,${op})`;
+  }).join(",");
+}
+const cssStars1 = genStarLayer(160, "0px",   0.12, 0.45); // tiny, dim
+const cssStars2 = genStarLayer(75,  "0.5px", 0.30, 0.70); // medium
+const cssStars3 = genStarLayer(28,  "1px",   0.60, 1.00); // bright, rare
 ---
 
 <!doctype html>
@@ -83,8 +96,15 @@ const alternateEs = `${siteUrl}/es/`;
     </script>
   </head>
   <body>
-    <!-- Canvas de campo de estrellas -->
+    <!-- Canvas de campo de estrellas — desktop -->
     <canvas id="starfield" aria-hidden="true"></canvas>
+
+    <!-- CSS starfield — móvil (evita bugs de iOS con position:fixed + canvas) -->
+    <div id="starfield-css" aria-hidden="true">
+      <div class="sl sl1" style={`box-shadow:${cssStars1}`}></div>
+      <div class="sl sl2" style={`box-shadow:${cssStars2}`}></div>
+      <div class="sl sl3" style={`box-shadow:${cssStars3}`}></div>
+    </div>
 
     <!-- Nebulosas decorativas -->
     <div class="nebula nebula-1" aria-hidden="true"></div>
@@ -116,10 +136,11 @@ const alternateEs = `${siteUrl}/es/`;
 
     <script>
       // =============================================
-      // Campo de estrellas — canvas
+      // Campo de estrellas — canvas (solo desktop)
       // =============================================
+      const isMobile = window.matchMedia("(max-width: 767px)").matches;
       const canvas = document.getElementById("starfield") as HTMLCanvasElement;
-      if (canvas) {
+      if (!isMobile && canvas) {
         const ctx = canvas.getContext("2d")!;
 
         interface Star {

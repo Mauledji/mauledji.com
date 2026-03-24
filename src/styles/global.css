@@ -303,6 +303,53 @@ body::before {
 }
 
 /* =============================================
+   CSS Starfield — móvil
+   ============================================= */
+#starfield-css {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+#starfield-css .sl {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  border-radius: 50%;
+  background: transparent;
+}
+
+#starfield-css .sl1 {
+  animation: css-twinkle 8s ease-in-out infinite alternate;
+}
+#starfield-css .sl2 {
+  animation: css-twinkle 5s ease-in-out infinite alternate;
+  animation-delay: -3s;
+}
+#starfield-css .sl3 {
+  animation: css-twinkle 3.5s ease-in-out infinite alternate;
+  animation-delay: -1.5s;
+}
+
+@keyframes css-twinkle {
+  0%   { opacity: 1; }
+  100% { opacity: 0.3; }
+}
+
+@media (max-width: 767px) {
+  #starfield     { display: none !important; }
+  #starfield-css { display: block; }
+}
+
+/* =============================================
    Animaciones GSAP — estado inicial
    Evita el parpadeo: elementos invisibles desde
    que el HTML pinta, antes de que JS cargue
