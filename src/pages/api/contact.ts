@@ -30,7 +30,7 @@ export const POST: APIRoute = async ({ request }) => {
     await resend.emails.send({
       // Sin dominio verificado: usa onboarding@resend.dev (funciona en free tier)
       // Con dominio verificado: cambia a algo como contact@tudominio.com
-      from: 'Portfolio Contact <onboarding@resend.dev>',
+      from: 'Portfolio Contact <contact@mauledji.com>',
       to: 'mauledji@outlook.com',
       replyTo: email,
       subject: `[Portfolio] Mensaje de ${name}`,
