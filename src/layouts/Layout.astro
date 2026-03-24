@@ -71,6 +71,15 @@ const alternateEs = `${siteUrl}/es/`;
       rel="stylesheet"
     />
     <title>{title}</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYC7SD3F49"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-QYC7SD3F49');
+    </script>
   </head>
   <body>
     <!-- Canvas de campo de estrellas -->
