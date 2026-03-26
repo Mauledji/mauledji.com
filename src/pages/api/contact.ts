@@ -14,7 +14,7 @@ export const POST: APIRoute = async ({ request }) => {
     return new Response(JSON.stringify({ error: 'Invalid request body' }), { status: 400 });
   }
 
-  const { name, email, message } = body;
+  const { name, email, message, turnstileToken } = body as typeof body & { turnstileToken: string };
 
   if (!name?.trim() || !email?.trim() || !message?.trim()) {
     return new Response(JSON.stringify({ error: 'All fields are required' }), { status: 400 });
@@ -24,6 +24,20 @@ export const POST: APIRoute = async ({ request }) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) {
     return new Response(JSON.stringify({ error: 'Invalid email address' }), { status: 400 });
+  }
+
+  // Verificación Turnstile
+  const verifyRes = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      secret: import.meta.env.TURNSTILE_SECRET_KEY,
+      response: turnstileToken,
+    }),
+  });
+  const verifyData = await verifyRes.json() as { success: boolean };
+  if (!verifyData.success) {
+    return new Response(JSON.stringify({ error: 'Bot verification failed' }), { status: 400 });
   }
 
   try {

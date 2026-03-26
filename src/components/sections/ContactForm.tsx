@@ -1,11 +1,31 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { sileo } from 'sileo';
 
 type Status = 'idle' | 'loading' | 'done';
 
+declare global {
+  interface Window {
+    onTurnstileSuccess?: (token: string) => void;
+    turnstile?: { reset: (selector: string) => void };
+  }
+}
+
 export default function ContactForm() {
   const [status, setStatus] = useState<Status>('idle');
   const [form, setForm] = useState({ name: '', email: '', message: '' });
+  const [turnstileToken, setTurnstileToken] = useState('');
+
+  useEffect(() => {
+    window.onTurnstileSuccess = (token: string) => setTurnstileToken(token);
+    const script = document.createElement('script');
+    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+    script.async = true;
+    document.head.appendChild(script);
+    return () => {
+      document.head.removeChild(script);
+      delete window.onTurnstileSuccess;
+    };
+  }, []);
 
   const set = (field: keyof typeof form) =>
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
@@ -20,7 +40,7 @@ export default function ContactForm() {
     const promise = fetch('/api/contact', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(form),
+      body: JSON.stringify({ ...form, turnstileToken }),
     }).then(async (res) => {
       if (!res.ok) {
         const data = await res.json();
@@ -38,6 +58,8 @@ export default function ContactForm() {
     try {
       await promise;
       setForm({ name: '', email: '', message: '' });
+      setTurnstileToken('');
+      window.turnstile?.reset('#cf-turnstile');
       setStatus('done');
     } catch {
       setStatus('idle');
@@ -129,9 +151,17 @@ export default function ContactForm() {
         />
       </div>
 
+      <div
+        id="cf-turnstile"
+        className="cf-turnstile"
+        data-sitekey={import.meta.env.PUBLIC_TURNSTILE_SITE_KEY}
+        data-callback="onTurnstileSuccess"
+        data-theme="dark"
+      />
+
       <button
         type="submit"
-        disabled={status === 'loading'}
+        disabled={status === 'loading' || !turnstileToken}
         style={{
           alignSelf: 'flex-start',
           display: 'inline-flex',
