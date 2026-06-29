@@ -105,57 +105,6 @@ body {
 }
 
 /* =============================================
-   Nebulosas decorativas
-   ============================================= */
-
-.nebula {
-  position: fixed;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 0;
-  filter: blur(80px);
-  opacity: 0.06;
-}
-
-.nebula-1 {
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, #7c3aed, transparent 70%);
-  top: -10%;
-  right: -10%;
-  animation: nebula-drift 25s ease-in-out infinite alternate;
-}
-
-.nebula-2 {
-  width: 500px;
-  height: 500px;
-  background: radial-gradient(circle, #3b82f6, transparent 70%);
-  bottom: 20%;
-  left: -15%;
-  animation: nebula-drift 30s ease-in-out infinite alternate-reverse;
-  opacity: 0.04;
-}
-
-.nebula-3 {
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, #a78bfa, transparent 70%);
-  top: 50%;
-  left: 40%;
-  animation: nebula-drift 35s ease-in-out infinite alternate;
-  opacity: 0.03;
-}
-
-@keyframes nebula-drift {
-  from {
-    transform: translate(0, 0) scale(1);
-  }
-  to {
-    transform: translate(30px, -20px) scale(1.1);
-  }
-}
-
-/* =============================================
    Secciones
    ============================================= */
 
