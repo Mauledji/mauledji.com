@@ -282,9 +282,37 @@ section {
    ============================================= */
 [data-animate="section"],
 [data-animate="item"],
-[data-animate="hero-item"] {
+[data-animate="hero-item"],
+[data-reveal="heading"] {
   opacity: 0;
 }
+
+/* SplitText line wrappers — promoted while they rise out of the mask */
+.hero-line,
+.reveal-line {
+  will-change: transform;
+}
+
+/* =============================================
+   Lenis — scroll suave
+   ============================================= */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
 
 /* =============================================
    Accesibilidad — reduce motion

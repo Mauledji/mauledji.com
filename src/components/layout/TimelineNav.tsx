@@ -87,7 +87,11 @@ export default function TimelineNav({ lang }: Props) {
   }, [segmentFills]);
 
   const scrollToSection = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    const el = document.getElementById(id);
+    if (!el) return;
+    const lenis = window.__lenis;
+    if (lenis) lenis.scrollTo(el, { duration: 1.2 });
+    else el.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (

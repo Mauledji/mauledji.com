@@ -307,8 +307,12 @@ const cssStars3 = genStarLayer(28,  "1px",   0.60, 1.00); // bright, rare
         });
       }
 
-      import { initAnimations } from "../lib/animations.ts";
-      document.addEventListener("DOMContentLoaded", initAnimations);
+      import { initMotion } from "../lib/motion";
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initMotion);
+      } else {
+        initMotion();
+      }
     </script>
   </body>
 </html>
