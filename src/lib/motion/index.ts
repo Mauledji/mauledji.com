@@ -6,7 +6,6 @@ import { buildHeroIntro } from "./heroIntro";
 import { initReveals } from "./reveals";
 import { initCounters } from "./counters";
 import { initParallax } from "./parallax";
-import { initMagnetic } from "./magnetic";
 import { initDecode } from "./decode";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -111,16 +110,13 @@ export function initMotion(): void {
       runHeroIntro();
 
       const isDesktop = window.matchMedia("(hover: hover)").matches;
-      let destroyMagnetic: (() => void) | undefined;
       let destroyStarfield: (() => void) | undefined;
       if (isDesktop) {
-        destroyMagnetic = initMagnetic();
         destroyStarfield = scheduleStarfield();
       }
 
       return () => {
         smooth?.destroy();
-        destroyMagnetic?.();
         destroyStarfield?.();
       };
     } catch (err) {
