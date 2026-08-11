@@ -1,5 +1,6 @@
 ---
 type DotVariant = "work" | "edu" | "databricks";
+type BadgeVariant = "progress" | "current";
 
 interface Props {
   period: string;
@@ -9,11 +10,26 @@ interface Props {
   description: string;
   highlights?: string[];
   badge?: string;
+  badgeVariant?: BadgeVariant;
   dot: DotVariant;
 }
 
-const { period, title, org, location, description, highlights, badge, dot } =
-  Astro.props;
+const {
+  period,
+  title,
+  org,
+  location,
+  description,
+  highlights,
+  badge,
+  badgeVariant = "progress",
+  dot,
+} = Astro.props;
+
+const badgeClass: Record<BadgeVariant, string> = {
+  progress: "text-yellow-400 bg-yellow-400/10 border-yellow-400/30",
+  current: "text-green bg-green/10 border-green/30",
+};
 
 const dotClass: Record<DotVariant, string> = {
   work: "bg-accent [box-shadow:0_0_8px_rgba(124,58,237,0.5)]",
@@ -40,18 +56,23 @@ const dotClass: Record<DotVariant, string> = {
       {period}
     </div>
     <div class="mb-3">
-      <h4
-        class="text-[1.05rem] font-semibold text-primary mb-1 tracking-[-0.01em] flex items-center gap-2 flex-wrap"
-      >
-        {title}
+      <!-- El badge vive fuera del h4: el nombre accesible del heading queda limpio -->
+      <div class="flex items-center gap-2 flex-wrap mb-1">
+        <h4
+          class="text-[1.05rem] font-semibold text-primary tracking-[-0.01em]"
+        >
+          {title}
+        </h4>
         {
           badge && (
-            <span class="text-[0.65rem] text-yellow-400 bg-yellow-400/10 border border-yellow-400/30 px-2 py-0.5 rounded-full tracking-[0.06em] font-medium uppercase">
+            <span
+              class={`text-[0.65rem] border px-2 py-0.5 rounded-full tracking-[0.06em] font-medium uppercase ${badgeClass[badgeVariant]}`}
+            >
               {badge}
             </span>
           )
         }
-      </h4>
+      </div>
       <span class="block text-[0.85rem] text-accent-light mb-1 font-medium"
         >{org}</span
       >

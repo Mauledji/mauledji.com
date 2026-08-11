@@ -80,6 +80,13 @@ export const es = {
     education_label: "Educación",
     certifications_label: "Certificaciones",
     in_progress: "En curso",
+    current: "Actual",
+    pg_period: "Jul 2026 — Presente",
+    pg_title: "Software Engineer Intern",
+    pg_org: "Procter & Gamble",
+    pg_location: "San José, CR",
+    pg_desc:
+      "Ingeniería de software en una de las compañías de consumo masivo más grandes del mundo — construyendo productos internos que apoyan operaciones globales.",
     work_period: "Ene 2025 — Ago 2025",
     work_title: "Full Stack Developer",
     work_org: "George Angulo Fitness",
