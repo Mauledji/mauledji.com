@@ -54,11 +54,26 @@ function revealBlocks(): void {
       );
 
       if (labels.length) {
-        gsap.fromTo(
-          labels,
-          { x: -28, opacity: 0 },
-          { x: 0, opacity: 1, duration: 0.8, ease: "power2.out", stagger: 0.1, overwrite: true },
+        // Los labels con decode ya tienen su propia entrada (el scramble):
+        // solo fade, sin drift — una gramática por elemento.
+        const decoding = labels.filter((el) =>
+          (el as Element).querySelector("[data-decode]"),
         );
+        const plain = labels.filter((el) => !decoding.includes(el));
+        if (decoding.length) {
+          gsap.fromTo(
+            decoding,
+            { opacity: 0 },
+            { opacity: 1, duration: 0.6, ease: "power2.out", overwrite: true },
+          );
+        }
+        if (plain.length) {
+          gsap.fromTo(
+            plain,
+            { x: -28, opacity: 0 },
+            { x: 0, opacity: 1, duration: 0.8, ease: "power2.out", stagger: 0.1, overwrite: true },
+          );
+        }
       }
       if (cards.length) {
         gsap.fromTo(

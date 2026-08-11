@@ -25,16 +25,8 @@ export function initParallax(): void {
     });
   }
 
-  // Subtle starfield drift — bg colour matches the page, so the revealed edge
-  // is invisible. Desktop only (mobile uses a separate CSS starfield).
-  const starfield = document.querySelector<HTMLElement>("#starfield");
-  if (starfield) {
-    gsap.to(starfield, {
-      yPercent: 5,
-      ease: "none",
-      scrollTrigger: { start: 0, end: "max", scrub: 0.6 },
-    });
-  }
+  // (El drift del starfield con el scroll ahora vive dentro de la escena
+  // Three.js, donde la profundidad real hace el parallax por capas.)
 
   // Generic opt-in depth: <el data-parallax="0.2">
   gsap.utils.toArray<HTMLElement>("[data-parallax]").forEach((el) => {

@@ -9,8 +9,10 @@ interface Props {
 
 const { href, variant = "primary", class: className } = Astro.props;
 
+// Sin transición CSS de transform: el movimiento lo maneja GSAP (magnetic).
+// El teclado recibe un estado diseñado igual que el pointer: outline visible.
 const base =
-  "inline-flex items-center gap-2 px-7 py-3 no-underline rounded-md font-medium text-[0.925rem] transition-[background,transform,border-color,color] duration-200 ease-[ease] tracking-[0.02em] hover:-translate-y-0.5";
+  "inline-flex items-center gap-2 px-7 py-3 no-underline rounded-md font-medium text-[0.925rem] transition-[background-color,border-color,color] duration-200 ease-[ease] tracking-[0.02em] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-light";
 
 const variants: Record<Variant, string> = {
   primary: "bg-accent text-star-white hover:bg-[#6d28d9]",
@@ -19,6 +21,10 @@ const variants: Record<Variant, string> = {
 };
 ---
 
-<a href={href} class={`${base} ${variants[variant]} ${className ?? ""}`}>
+<a
+  href={href}
+  class={`${base} ${variants[variant]} ${className ?? ""}`}
+  data-magnetic="0.28"
+>
   <slot />
 </a>

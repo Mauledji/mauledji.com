@@ -41,9 +41,13 @@ html {
   scroll-padding-top: 80px;
 }
 
-*,
-*::before,
-*::after {
+/* El cursor nativo solo se oculta cuando el cursor custom está activo de
+   verdad (clase puesta por CustomCursor.tsx) — así nunca queda la página
+   sin puntero: pre-hidratación, JS fallido, touch híbrido o reduced-motion. */
+html.has-custom-cursor,
+html.has-custom-cursor *,
+html.has-custom-cursor *::before,
+html.has-custom-cursor *::after {
   cursor: none !important;
 }
 
@@ -95,13 +99,21 @@ body {
   top: 0;
   left: 0;
   width: 100%;
-  height: var(--app-height, 100%);
+  height: 100vh; /* fallback para navegadores sin lvh */
+  height: 100lvh;
   z-index: 0;
   pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.4s ease;
   -webkit-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
+}
+
+/* La escena WebGL marca is-live cuando está lista — fade-in suave */
+#starfield.is-live {
+  opacity: 1;
 }
 
 /* =============================================
@@ -111,6 +123,24 @@ body {
 section {
   position: relative;
   z-index: 1;
+}
+
+/* =============================================
+   Visually hidden — texto solo para lectores de pantalla
+   (respaldo por si la utility de Tailwind no se genera:
+   la clase se usa desde JS en decode.ts)
+   ============================================= */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
 
 /* =============================================
@@ -226,6 +256,7 @@ section {
   top: 0;
   left: 0;
   right: 0;
+  height: 100vh; /* fallback para navegadores sin lvh */
   height: 100lvh; /* large viewport height: cubre el área cuando la URL bar se oculta */
   z-index: 0;
   pointer-events: none;
@@ -273,6 +304,14 @@ section {
   #starfield-css {
     display: block;
   }
+}
+
+/* Fallback también en desktop: WebGL no disponible o reduced-motion */
+html.starfield-fallback #starfield {
+  display: none !important;
+}
+html.starfield-fallback #starfield-css {
+  display: block;
 }
 
 /* =============================================

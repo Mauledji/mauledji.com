@@ -8,14 +8,16 @@ const CustomCursor = () => {
 
     useEffect(() => {
         const isTouchDevice = () => {
-            const hasTouch = 'ontouchstart' in window ||
-                navigator.maxTouchPoints > 0;
             const hasCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
             const hasFinePointer = window.matchMedia('(pointer: fine)').matches;
-            return hasTouch || (hasCoarsePointer && !hasFinePointer);
+            return hasCoarsePointer && !hasFinePointer;
         };
+        const prefersReducedMotion = window.matchMedia(
+            '(prefers-reduced-motion: reduce)'
+        ).matches;
 
-        if (isTouchDevice()) {
+        // Sin puntero fino o con reduced-motion: cursor nativo, sin isla.
+        if (isTouchDevice() || prefersReducedMotion) {
             setShouldRender(false);
         }
     }, []);
@@ -23,10 +25,12 @@ const CustomCursor = () => {
     useGSAP(() => {
         if (!shouldRender) return;
 
-        document.body.style.cursor = 'none';
-
         const cursor = cursorRef.current;
         if (!cursor) return;
+
+        // Solo cuando el cursor custom realmente corre se oculta el nativo
+        // (la regla CSS está scoped a esta clase).
+        document.documentElement.classList.add('has-custom-cursor');
 
         const position = {
             previous: { x: -100, y: -100 },
@@ -36,6 +40,28 @@ const CustomCursor = () => {
 
         const lerpAmount = 0.15;
         let rafId: number | null = null;
+
+        // El cursor crece sobre elementos interactivos — blend difference
+        // hace que se sienta como una lupa de foco, no como decoración.
+        // Sobre campos de texto se ENCOGE: un puntero de precisión que no
+        // tapa el texto ni el caret del formulario.
+        const INTERACTIVE = 'a, button, [role="button"], input, textarea, select, [data-cursor-hover]';
+        const TEXT_FIELD = 'input, textarea, select';
+        const hoverState = { scale: 1 };
+        let hovered: Element | null = null;
+
+        const handleMouseOver = (e: MouseEvent) => {
+            const target = (e.target as Element | null)?.closest(INTERACTIVE) ?? null;
+            if (target === hovered) return;
+            hovered = target;
+            const scale = target ? (target.matches(TEXT_FIELD) ? 0.5 : 1.6) : 1;
+            gsap.to(hoverState, {
+                scale,
+                duration: 0.3,
+                ease: 'power3.out',
+                overwrite: true,
+            });
+        };
 
         const handleMouseMove = (e: MouseEvent) => {
             position.target.x = e.clientX;
@@ -58,9 +84,12 @@ const CustomCursor = () => {
 
             const angle = Math.atan2(deltaY, deltaX) * (180 / Math.PI);
             const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-            const stretchFactor = Math.min(distance * 0.08, 1.2);
-            const scaleX = 0.8 + stretchFactor;
-            const scaleY = 0.8 - stretchFactor * 0.4;
+            // El estiramiento por velocidad se atenúa mientras el cursor está
+            // agrandado sobre un elemento interactivo — foco estable, no gelatina.
+            const stretchDamp = 1 / hoverState.scale;
+            const stretchFactor = Math.min(distance * 0.08, 1.2) * stretchDamp;
+            const scaleX = (0.8 + stretchFactor) * hoverState.scale;
+            const scaleY = (0.8 - stretchFactor * 0.4) * hoverState.scale;
 
             gsap.set(cursor, {
                 x: position.current.x,
@@ -74,12 +103,14 @@ const CustomCursor = () => {
         };
 
         window.addEventListener('mousemove', handleMouseMove);
+        window.addEventListener('mouseover', handleMouseOver);
         animate();
 
         return () => {
             window.removeEventListener('mousemove', handleMouseMove);
+            window.removeEventListener('mouseover', handleMouseOver);
             if (rafId) cancelAnimationFrame(rafId);
-            document.body.style.cursor = 'auto';
+            document.documentElement.classList.remove('has-custom-cursor');
         };
     }, [shouldRender]);
 
@@ -88,6 +119,7 @@ const CustomCursor = () => {
     return (
         <div
             ref={cursorRef}
+            aria-hidden="true"
             style={{
                 position: 'fixed',
                 top: 0,
